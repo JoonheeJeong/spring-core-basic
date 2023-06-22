@@ -16,16 +16,19 @@ public class AppConfig {
 
     @Bean
     public MemberService memberService() {
+        System.out.println("call only onetime -- AppConfig.memberService");
         return new MemberServiceImpl(memberRepository());
     }
 
     @Bean
     public OrderService orderService() {
+        System.out.println("call only onetime -- AppConfig.orderService");
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
     @Bean
     public MemberRepository memberRepository() {
+        System.out.println("call only onetime -- AppConfig.memberRepository");
         return new MemoryMemberRepository();
     }
 
