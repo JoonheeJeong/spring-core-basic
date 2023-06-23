@@ -1,10 +1,21 @@
 package hello.core;
 
+import hello.core.member.MemberRepository;
+import hello.core.member.MemoryMemberRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 
 @Configuration
-@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Configuration.class))
+@ComponentScan(excludeFilters = @Filter(type = FilterType.ANNOTATION, classes = Configuration.class))
+//@ComponentScan
 public class AutoAppConfig {
+
+    @Bean("memoryMemberRepository")
+    public MemberRepository memberRepository() {
+        System.out.println("call only onetime -- AutoAppConfig.memberRepository");
+        return new MemoryMemberRepository();
+    }
 }
