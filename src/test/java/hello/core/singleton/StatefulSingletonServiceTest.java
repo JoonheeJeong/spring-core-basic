@@ -1,4 +1,4 @@
-package singleton;
+package hello.core.singleton;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
