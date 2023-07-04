@@ -20,7 +20,8 @@ public class BeanLifeCycleTest {
 
 
 //        @Bean(initMethod = "init", destroyMethod = "close")
-        @Bean(initMethod = "init")
+//        @Bean(initMethod = "init")
+        @Bean
         public NetworkClient networkClient() {
             NetworkClient networkClient = new NetworkClient();
             networkClient.setUrl("https://test.url.dev");
