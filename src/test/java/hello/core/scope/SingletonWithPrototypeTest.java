@@ -1,5 +1,6 @@
 package hello.core.scope;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -10,7 +11,7 @@ import javax.annotation.PreDestroy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SingletonWithPrototypeTest1 {
+public class SingletonWithPrototypeTest {
 
     @Test
     void findPrototypeBean() {
@@ -22,6 +23,16 @@ public class SingletonWithPrototypeTest1 {
         PrototypeBean prototypeBean2 = ac.getBean(PrototypeBean.class);
         prototypeBean2.addCount();
         assertThat(prototypeBean2.getCount()).isEqualTo(1);
+    }
+
+    @Test
+    void singletonClientUsingPrototype() {
+        ConfigurableApplicationContext ac = new AnnotationConfigApplicationContext(PrototypeBean.class, ClientBean.class);
+        ClientBean clientBean1 = ac.getBean(ClientBean.class);
+        assertThat(clientBean1.logic()).isEqualTo(1);
+
+        ClientBean clientBean2 = ac.getBean(ClientBean.class);
+        assertThat(clientBean2.logic()).isNotEqualTo(1);
     }
 
     @Scope("prototype")
@@ -46,5 +57,17 @@ public class SingletonWithPrototypeTest1 {
         public void destroy() {
             System.out.println("PrototypeBean.destroy");
         }
+    }
+
+    @RequiredArgsConstructor
+    private static class ClientBean {
+
+        private final PrototypeBean prototypeBean;
+
+        public int logic() {
+            prototypeBean.addCount();
+            return prototypeBean.getCount();
+        }
+
     }
 }
