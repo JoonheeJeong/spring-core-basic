@@ -12,12 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class LogDemoController {
 
-    private final Provider<MyLogger> myLoggerProvider;
+//    private final Provider<MyLogger> myLoggerProvider;
+    private final MyLogger myLogger;
     private final LogDemoService logDemoService;
 
     @GetMapping("log-demo")
     public String logDemo(HttpServletRequest req) throws InterruptedException {
-        MyLogger myLogger = myLoggerProvider.get();
+//        MyLogger myLogger = myLoggerProvider.get();
         myLogger.setRequestURL(req.getRequestURL().toString());
 
         Thread.sleep(1000);
