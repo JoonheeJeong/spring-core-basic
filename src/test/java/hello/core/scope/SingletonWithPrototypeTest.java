@@ -2,6 +2,7 @@ package hello.core.scope;
 
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -33,6 +34,16 @@ public class SingletonWithPrototypeTest {
 
         ClientBean clientBean2 = ac.getBean(ClientBean.class);
         assertThat(clientBean2.logic()).isNotEqualTo(1);
+    }
+
+    @Test
+    void singletonClientUsingPrototypeProvider() {
+        ConfigurableApplicationContext ac = new AnnotationConfigApplicationContext(PrototypeBean.class, ClientBeanWithProvider.class);
+        ClientBeanWithProvider clientBean1 = ac.getBean(ClientBeanWithProvider.class);
+        assertThat(clientBean1.logic()).isEqualTo(1);
+
+        ClientBeanWithProvider clientBean2 = ac.getBean(ClientBeanWithProvider.class);
+        assertThat(clientBean2.logic()).isEqualTo(1);
     }
 
     @Scope("prototype")
@@ -68,6 +79,18 @@ public class SingletonWithPrototypeTest {
             prototypeBean.addCount();
             return prototypeBean.getCount();
         }
+    }
 
+    @RequiredArgsConstructor
+    private static class ClientBeanWithProvider {
+
+        private final ObjectProvider<PrototypeBean> prototypeBeanObjectProvider;
+
+
+        public int logic() {
+            PrototypeBean prototypeBean = prototypeBeanObjectProvider.getObject();
+            prototypeBean.addCount();
+            return prototypeBean.getCount();
+        }
     }
 }
